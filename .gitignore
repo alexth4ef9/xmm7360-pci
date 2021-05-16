@@ -13,3 +13,9 @@ modules.order
 .vscode
 __pycache__
 *.pyc
+debian/files
+debian/*.debhelper*
+debian/*.substvars
+debian/xmm7360-dkms/
+debian/xmm7360-rpc/
+.tmp/

@@ -1,0 +1,36 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/pkg-info.mk
+
+%:
+	dh $@ --with dkms --with python3
+
+override_dh_install:
+	dh_install Makefile usr/src/xmm7360-$(DEB_VERSION_UPSTREAM)/
+	dh_install xmm7360.c usr/src/xmm7360-$(DEB_VERSION_UPSTREAM)/
+
+override_dh_dkms:
+	dh_dkms -V $(DEB_VERSION_UPSTREAM)
+
+override_dh_clean:
+	rm -rf .tmp
+	dh_clean
+
+override_dh_auto_configure:
+
+override_dh_auto_build:
+	mkdir -p .tmp/xmmrpc
+	sed 's/import rpc/from xmmrpc import rpc/' rpc/open_xdatachannel.py >.tmp/xmmctrl
+	chmod 755 .tmp/xmmctrl
+	sed 's/import rpc_/import .rpc_/' rpc/rpc.py >.tmp/xmmrpc/rcp.py
+	cp rpc/rpc_call_ids.py .tmp/xmmrpc
+	cp rpc/rpc_unsol_table.py .tmp/xmmrpc
+	echo "" >.tmp/xmmrpc/__init__.py
+	chmod 644 .tmp/xmmrpc/*.py
+	sed '/Setup/,+2d' xmm7360.ini.sample >.tmp/xmm7360
+
+override_dh_auto_test:
+
+override_dh_auto_install:
+
+override_dh_auto_clean:

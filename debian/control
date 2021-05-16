@@ -1,0 +1,17 @@
+Source: xmm7360-pci
+Maintainer: James Wah <james@laird-wah.net>
+Build-Depends: debhelper (>= 9), dkms, python3-all
+Section: net
+Priority: optional
+Standards-Version: 4.5.1
+Vcs-Git: https://github.com/xmm7360/xmm7360-pci.git
+
+Package: xmm7360-dkms
+Architecture: amd64
+Depends: ${misc:Depends}
+Description: DKMS source for Intel XMM7360 LTE modem
+
+Package: xmm7360-rpc
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}, xmm7360-dkms, python3, python3-pyroute2, python3-configargparse 
+Description: Tools for Intel XMM7360 LTE modem

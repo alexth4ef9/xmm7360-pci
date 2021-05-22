@@ -20,12 +20,11 @@ override_dh_auto_configure:
 
 override_dh_auto_build:
 	mkdir -p .tmp/xmmrpc
-	sed 's/import rpc/from xmmrpc import rpc/' rpc/open_xdatachannel.py >.tmp/xmmctrl
+	sed 's/import rpc/import xmmrpc/' rpc/open_xdatachannel.py | sed 's/rpc./xmmrpc./' >.tmp/xmmctrl
 	chmod 755 .tmp/xmmctrl
-	sed 's/import rpc_/import .rpc_/' rpc/rpc.py >.tmp/xmmrpc/rcp.py
+	sed 's/import rpc_/from . import rpc_/' rpc/rpc.py >.tmp/xmmrpc/__init__.py
 	cp rpc/rpc_call_ids.py .tmp/xmmrpc
 	cp rpc/rpc_unsol_table.py .tmp/xmmrpc
-	echo "" >.tmp/xmmrpc/__init__.py
 	chmod 644 .tmp/xmmrpc/*.py
 	sed '/Setup/,+2d' xmm7360.ini.sample >.tmp/xmm7360
 
